@@ -41,9 +41,6 @@ class SimpleUrlPreview extends StatefulWidget {
   /// Style of site title
   final TextStyle? siteNameStyle;
 
-  /// Color for loader icon shown, till image loads
-  final Color? imageLoaderColor;
-
   /// Container padding
   final EdgeInsetsGeometry? previewContainerPadding;
 
@@ -60,7 +57,6 @@ class SimpleUrlPreview extends StatefulWidget {
     this.descriptionStyle,
     this.descriptionLines = 3,
     this.siteNameStyle,
-    this.imageLoaderColor,
     this.previewContainerPadding,
     this.onTap,
   })  : assert(previewHeight >= 130.0,
@@ -85,7 +81,6 @@ class _SimpleUrlPreviewState extends State<SimpleUrlPreview> {
   TextStyle? _descriptionStyle;
   int? _descriptionLines;
   TextStyle? _siteNameStyle;
-  Color? _imageLoaderColor;
   EdgeInsetsGeometry? _previewContainerPadding;
   VoidCallback? _onTap;
 
@@ -170,8 +165,6 @@ class _SimpleUrlPreviewState extends State<SimpleUrlPreview> {
   Widget build(BuildContext context) {
     _isClosable = widget.isClosable ?? false;
     _bgColor = widget.bgColor ?? Theme.of(context).primaryColor;
-    _imageLoaderColor =
-        widget.imageLoaderColor ?? Theme.of(context).accentColor;
     _initialize();
 
     if (_urlPreviewData == null || !_isVisible) {
@@ -213,20 +206,15 @@ class _SimpleUrlPreviewState extends State<SimpleUrlPreview> {
 
   Card _buildPreviewCard(BuildContext context) {
     return Card(
-      elevation: 5,
+      elevation: 0,
       color: _bgColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            width: (MediaQuery.of(context).size.width -
-                    MediaQuery.of(context).padding.left -
-                    MediaQuery.of(context).padding.right) *
-                0.25,
-            child: PreviewImage(
-              _urlPreviewData!['og:image'],
-              _imageLoaderColor,
-            ),
+            width: 4.0,
+            height: double.infinity,
+            color: const Color(0xFFECECEC),
           ),
           Expanded(
             child: Padding(
@@ -241,7 +229,7 @@ class _SimpleUrlPreviewState extends State<SimpleUrlPreview> {
                           ? TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Theme.of(context).accentColor,
+                              color: Theme.of(context).colorScheme.secondary,
                             )
                           : _titleStyle,
                       _titleLines),
@@ -250,7 +238,7 @@ class _SimpleUrlPreviewState extends State<SimpleUrlPreview> {
                     _descriptionStyle == null
                         ? TextStyle(
                             fontSize: 14,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           )
                         : _descriptionStyle,
                     _descriptionLines,
@@ -260,7 +248,7 @@ class _SimpleUrlPreviewState extends State<SimpleUrlPreview> {
                     _siteNameStyle == null
                         ? TextStyle(
                             fontSize: 14,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           )
                         : _siteNameStyle,
                   ),
